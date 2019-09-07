@@ -67,7 +67,7 @@ class SofemaxWithLoss:
     def forward(self, x, t):
         self.t = t
         self.y = softmax_function(x)
-        self.loss = cross_entropy_one_hot(self.y, t)
+        self.loss = cross_entropy_one_hot(self.y, self.t)
 
         return self.loss
 

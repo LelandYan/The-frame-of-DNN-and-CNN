@@ -5,9 +5,25 @@ from common.gradient import numerical_gradient
 
 
 class MultiLayerNexExtend:
+    """
+    具有weight Decay、Dropout、Batch Normalization功能的全连接多层神经网络
+    """
     def __init__(self, input_size, hidden_size_list, output_size, activation="relu",
                  weight_init_std="relu", weight_decay_lambda=0,
                  use_dropout=False, dropout_ratio=0.5, use_batchnorm=False):
+        """
+        :param input_size: 输入的大小
+        :param hidden_size_list: 隐藏层的神经元数量列表
+        :param output_size: 输出的大小
+        :param activation: "relu" or "sigmoid"
+        :param weight_init_std: 指定权重的标准差，
+        指定"relu" 或者 "he" 是定为"He"的初始值
+        指定"sigmoid" 或者 "xavier" 是定为"Xauver"的初始值
+        :param weight_decay_lambda: Weight Decay(L2范数)的强度
+        :param use_dropout: 是否使用Dropout
+        :param dropout_ratio: Dropout比例
+        :param use_batchnorm: 是否只用Batch Normalization
+        """
         self.input_size = input_size
         self.output_size = output_size
         self.hidden_size_list = hidden_size_list
@@ -41,6 +57,11 @@ class MultiLayerNexExtend:
         self.last_layer = SofemaxWithLoss()
 
     def __init_weight(self, weight_init_std):
+        """
+        设定权重的初始值
+        :param weight_init_std:
+        :return:
+        """
         all_size_list = [self.input_size] + self.hidden_size_list + [self.output_size]
         for idx in range(1, len(all_size_list)):
             scale = weight_init_std
@@ -60,6 +81,13 @@ class MultiLayerNexExtend:
         return x
 
     def loss(self, x, t, train_flg=False):
+        """
+        求损失函数
+        :param x:输入数据
+        :param t: 真是标签
+        :param train_flg:是否为模型训练
+        :return:
+        """
         y = self.predict(x, train_flg)
 
         weight_decay = 0
