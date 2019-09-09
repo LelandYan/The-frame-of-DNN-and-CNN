@@ -1,6 +1,6 @@
 import numpy as np
 from common.gradient import numerical_gradient
-from common.layers import Affine, Sigmoid, SofemaxWithLoss, ReLU
+from common.layers import Affine, Sigmoid, SoftmaxWithLoss, ReLU
 from collections import OrderedDict
 
 
@@ -20,7 +20,7 @@ class TwoLayerNet:
         self.layers["Affine1"] = Affine(self.params["W1"], self.params["b1"])
         self.layers["ReLU1"] = ReLU()
         self.layers["Affine2"] = Affine(self.params["W2"], self.params["b2"])
-        self.lastLayer = SofemaxWithLoss()
+        self.lastLayer = SoftmaxWithLoss()
 
     def predict(self, x):
         for layer in self.layers.values():
@@ -73,5 +73,8 @@ class TwoLayerNet:
 if __name__ == '__main__':
     net = TwoLayerNet(input_size=784, hidden_size=100, output_size=10)
     print(net.params["W1"].shape)
-    x = np.random.rand(100, 784)
-    y = net.predict(x)
+    print(net.params["b1"].shape)
+    print(net.params["W2"].shape)
+    print(net.params["b2"].shape)
+    # x = np.random.rand(100, 784)
+    # y = net.predict(x)

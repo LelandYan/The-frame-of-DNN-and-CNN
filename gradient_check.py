@@ -11,23 +11,22 @@ sys.path.append(os.pardir)
 # def img_show(img):
 #     pil_img = Image.fromarray(np.uint8(img))
 #     pil_img.show()
-
-
+#
+#
 # (x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=False)
-#
-# # print(x_train.shape)
-# # print(t_train.shape)
-# # print(x_test.shape)
-# # print(t_test.shape)
-#
-# img = x_train[0]
-# label = t_train[0]
+# #
+# # # print(x_train.shape)
+# # # print(t_train.shape)
+# # # print(x_test.shape)
+# # # print(t_test.shape)
+# #
+# img = x_test[20]
+# label = t_test[20]
 # print(label)
 #
-# print(img.shape)
 # img = img.reshape(28, 28)
-# print(img.shape)
-
+# # print(img.shape)
+#
 # img_show(img)
 
 if __name__ == '__main__':
@@ -46,6 +45,7 @@ if __name__ == '__main__':
     theta1 = 0
     theta2 = 0
     for key in grad_numerical.keys():
+        print(key+": ", np.average(np.abs(grad_backprop[key] - grad_numerical[key])))
         # diff = np.average(np.abs(grad_backprop[key] - grad_numerical[key]))
         new_vector1 = np.reshape(grad_numerical[key], (1, -1))
         new_vector2 = np.reshape(grad_backprop[key], (1, -1))
@@ -59,7 +59,9 @@ if __name__ == '__main__':
     diff = np.linalg.norm(theta1 - theta2) / (
             np.linalg.norm(theta1) + np.linalg.norm(theta2))
     print(diff)
-    if diff < 1e-7:
+    # # print(np.linalg.norm(theta1 - theta2))
+    # # print(np.linalg.norm(theta1) + np.linalg.norm(theta2))
+    if diff < 1e-6:
         print("The gradient is correct!")
     else:
         print("The gradient is wrong!")

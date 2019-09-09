@@ -1,5 +1,5 @@
 import numpy as np
-from common.layers import Affine, Sigmoid, SofemaxWithLoss, ReLU, BatchNormalization, Dropout
+from common.layers import Affine, Sigmoid, SoftmaxWithLoss, ReLU, BatchNormalization, Dropout
 from collections import OrderedDict
 from common.gradient import numerical_gradient
 
@@ -54,7 +54,7 @@ class MultiLayerNexExtend:
                 self.layers["Dropout" + str(idx)] = Dropout(dropout_ratio)
         idx = self.hidden_layer_num + 1
         self.layers["Affine" + str(idx)] = Affine(self.params["W" + str(idx)], self.params["b" + str(idx)])
-        self.last_layer = SofemaxWithLoss()
+        self.last_layer = SoftmaxWithLoss()
 
     def __init_weight(self, weight_init_std):
         """
@@ -88,12 +88,14 @@ class MultiLayerNexExtend:
         :param train_flg:是否为模型训练
         :return:
         """
+
         y = self.predict(x, train_flg)
 
         weight_decay = 0
         for idx in range(1, self.hidden_layer_num + 2):
             W = self.params["W" + str(idx)]
             weight_decay += 0.5 * self.weight_decay_lambda * np.sum(W ** 2)
+
         return self.last_layer.forward(y, t) + weight_decay
 
     def accuracy(self, X, T):
@@ -118,6 +120,7 @@ class MultiLayerNexExtend:
         return grads
 
     def gradient(self, x, t):
+
         # forward
         self.loss(x, t, train_flg=True)
 

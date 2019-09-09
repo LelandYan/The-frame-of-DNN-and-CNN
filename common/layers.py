@@ -1,5 +1,5 @@
 import numpy as np
-from .functions import cross_entropy_one_hot, softmax_function
+from .functions import cross_entropy_error, softmax_function, sigmoid_function
 
 
 class ReLU:
@@ -25,7 +25,7 @@ class Sigmoid:
         self.out = None
 
     def forward(self, x):
-        out = 1 / (1 + np.exp(-x))
+        out = sigmoid_function(x)
         self.out = out
 
         return out
@@ -41,12 +41,15 @@ class Affine:
         self.W = W
         self.b = b
         self.x = None
+        self.original_x_shape = None
         self.dW = None
         self.db = None
 
     def forward(self, x):
+        self.original_x_shape = x.shape
+        x = x.reshape(x.shape[0], -1)
         self.x = x
-        out = np.dot(x, self.W) + self.b
+        out = np.dot(self.x, self.W) + self.b
 
         return out
 
@@ -55,26 +58,32 @@ class Affine:
         self.dW = np.dot(self.x.T, dout)
         self.db = np.sum(dout, axis=0)
 
+        dx = dx.reshape(*self.original_x_shape)
         return dx
 
 
-class SofemaxWithLoss:
+class SoftmaxWithLoss:
     def __init__(self):
         self.loss = None
         self.y = None
         self.t = None
 
     def forward(self, x, t):
+
         self.t = t
         self.y = softmax_function(x)
-        self.loss = cross_entropy_one_hot(self.y, self.t)
+        self.loss = cross_entropy_error(self.y, self.t)
 
         return self.loss
 
     def backward(self, dout=1):
         batch_size = self.t.shape[0]
-        dx = (self.y - self.t) / batch_size
-
+        if self.t.size == self.y.size:
+            dx = (self.y - self.t) / batch_size
+        else:
+            dx = self.y.copy()
+            dx[np.arange(batch_size), self.t] -= 1
+            dx = dx / batch_size
         return dx
 
 
