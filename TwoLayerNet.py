@@ -76,5 +76,4 @@ if __name__ == '__main__':
     print(net.params["b1"].shape)
     print(net.params["W2"].shape)
     print(net.params["b2"].shape)
-    # x = np.random.rand(100, 784)
-    # y = net.predict(x)
+
