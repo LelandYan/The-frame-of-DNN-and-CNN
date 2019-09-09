@@ -72,13 +72,13 @@ plt.show()
 ### Using DNN in Your Project
 
 ```python
-│  example.py 
-│  gradient_check.py 
+│  example.py  
+│  gradient_check.py # the gradient check
 │  list.txt
-│  MultiLayerNetExtend.py
-│  neuralnet_mnist.py
+│  MultiLayerNetExtend.py # the whole model
+│  neuralnet_mnist.py # the download data scripts 
 │  README.md
-│  TwoLayerNet.py
+│  TwoLayerNet.py # the easy model
 │  
 │          
 ├─common
@@ -90,7 +90,7 @@ plt.show()
 │  └─ __init__.py
 │          
 │          
-├─dataset
+├─dataset # mnist datasets
 │  │  mnist.pkl
 │  │  mnist.py
 │  │  t10k-images-idx3-ubyte.gz
